@@ -159,16 +159,21 @@ func handleGenerateCommand(withArguments arguments: [String]) {
         // Unexpected to go in here but possible if PWD is not defined from the environment.
         outputDirectory = URL(string: FileManager.default.currentDirectoryPath)!
     }
-    outputDirectory = URL(fileURLWithPath: outputDirectory.absoluteString, isDirectory: true)
+    // MARK:REVERTED!
+    outputDirectory = URL(fileURLWithPath: outputDirectory.absoluteString, isDirectory: true)//URL(fileURLWithPath:"/Users/rajat.g/Development/JSON2POJO/plank", isDirectory: true).standardizedFileURL//
 
     let urls = args.map { URL(fileURLWithPath: $0).standardizedFileURL }
 
     if flags[.printDeps] != nil {
+        // Generate only dependencies
         generateDeps(urls: Set(urls))
     } else if flags[.onlyRuntime] != nil {
+        // Generate only runtime files i.e. m files
         generateFileRuntime(outputDirectory: outputDirectory)
     } else {
+        // Generate header and implementation files both
         let languages: [Languages] = flags[.lang]?.trimmingCharacters(in: .whitespaces).components(separatedBy: ",").flatMap {
+            // Get the right language type
             guard let lang = Languages.init(rawValue: $0) else {
                 fatalError("Invalid or unsupported language: \($0)")
             }

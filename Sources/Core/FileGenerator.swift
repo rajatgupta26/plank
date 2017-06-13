@@ -21,6 +21,7 @@ public enum GenerationParameterType {
 
 public enum Languages: String {
     case objectiveC = "objc"
+    case swift = "swift"
 }
 
 public protocol FileGeneratorManager {
@@ -28,13 +29,16 @@ public protocol FileGeneratorManager {
     static func runtimeFiles() -> [FileGenerator]
 }
 
+// Object containing file content(String) and name
 public protocol FileGenerator {
     func renderFile() -> String
     var fileName: String { mutating get }
 }
 
+// Extension of FileGenerator with generic functions
 extension FileGenerator {
 
+    // The comment header to be added at the top of file
     func renderCommentHeader() -> String {
         formatter.dateStyle = DateFormatter.Style.long
         formatter.timeStyle = .medium
@@ -57,11 +61,15 @@ extension FileGenerator {
     }
 }
 
+// Default implementation of FileGeneratorManager protocol functions
 extension FileGeneratorManager {
     func generateFile(_ schema: SchemaObjectRoot, outputDirectory: URL, generationParameters: GenerationParameters) {
+        // 'filesToGenerate' generates FileGenerators for files specified by schema with given generation parameters.
         for var file in Self.filesToGenerate(descriptor: schema, generatorParameters: generationParameters) {
-            let fileContents = file.renderFile() + "\n" // Ensure there is exactly one new line a the end of the file
+            // Get the content string for file from FileGenerator
+            let fileContents = file.renderFile() + "\n" // Ensure there is exactly one new line at the end of the file
             do {
+                // Try writing to disk at given file url
                 try fileContents.write(
                     to: URL(string: file.fileName, relativeTo: outputDirectory)!,
                     atomically: true,
@@ -92,6 +100,8 @@ func generator(forLanguage language: Languages) -> FileGeneratorManager {
     switch language {
     case .objectiveC:
         return ObjectiveCFileGenerator()
+    case .swift:
+        return SwiftFileGenerator()
     }
 }
 
@@ -125,18 +135,32 @@ public func generateDeps(urls: Set<URL>) {
 }
 
 public func generateFiles(urls: Set<URL>, outputDirectory: URL, generationParameters: GenerationParameters, forLanguages languages: [Languages]) {
+    // Generate files with given schema urls, generation parameters and language
+    
+    // Get the generator object for language
     let fileGenerators: [FileGeneratorManager] = languages.map(generator)
+    
+    // Load schema from url
     _ = loadSchemasForUrls(urls: urls)
+    
+    // Process schemas one by one
     var processedSchemas = Set<URL>([])
     repeat {
         _ = FileSchemaLoader.sharedInstance.refs.map({ (url: URL, schema: Schema) -> Void in
             if processedSchemas.contains(url) {
+                // Return if schema is already processed
                 return
             }
+            // Else enter schema to processed schemas
             processedSchemas.insert(url)
             switch schema {
             case .object(let rootObject):
+                // Root schema must be of type object
                 fileGenerators.forEach { generator in
+                    // Ask each generator to generate file with schema.
+                    // This is the point where each generator can have different processing logic based on requirements.
+                    // Objective C generator generates, h and m files, builder for the object, NSCoding compliant code and some other things.
+                    // Refer the SchemaObjectRoot and other Schema model structs for reference and implement code for required functionality accordingly.
                     generator.generateFile(rootObject,
                                            outputDirectory: outputDirectory,
                                            generationParameters: generationParameters)

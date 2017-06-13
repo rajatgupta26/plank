@@ -9,7 +9,9 @@
 import Foundation
 
 func handleProcess(processInfo: ProcessInfo) {
+    //MARK:REVERTED!
     let arguments = processInfo.arguments.dropFirst() // Drop executable name
+//    let arguments = ["--lang=swift", "pin.json"]
     handleGenerateCommand(withArguments: Array(arguments))
 }
 
