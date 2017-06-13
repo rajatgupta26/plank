@@ -70,7 +70,7 @@
 		OBJ_22 /* PlankTestExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = PlankTestExtension.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		OBJ_23 /* Utility */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Utility; sourceTree = SOURCE_ROOT; };
 		OBJ_25 /* Core.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Core.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		OBJ_26 /* plank */ = {isa = PBXFileReference; lastKnownFileType = text; path = plank; sourceTree = BUILT_PRODUCTS_DIR; };
+		OBJ_26 /* my-plank */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; path = "my-plank"; sourceTree = BUILT_PRODUCTS_DIR; };
 		OBJ_27 /* CoreTests.xctest */ = {isa = PBXFileReference; lastKnownFileType = file; path = CoreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		OBJ_6 /* Package.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		OBJ_9 /* FileGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = FileGenerator.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -137,7 +137,7 @@
 			isa = PBXGroup;
 			children = (
 				OBJ_25 /* Core.framework */,
-				OBJ_26 /* plank */,
+				OBJ_26 /* my-plank */,
 				OBJ_27 /* CoreTests.xctest */,
 			);
 			name = Products;
@@ -220,7 +220,7 @@
 			);
 			name = plank;
 			productName = plank;
-			productReference = OBJ_26 /* plank */;
+			productReference = OBJ_26 /* my-plank */;
 			productType = "com.apple.product-type.tool";
 		};
 		OBJ_51 /* CoreTests */ = {
@@ -459,6 +459,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(TOOLCHAIN_DIR)/usr/lib/swift/macosx @executable_path";
 				OTHER_LDFLAGS = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "$(inherited)";
+				PRODUCT_NAME = "my-$(TARGET_NAME)";
 				SWIFT_FORCE_DYNAMIC_LINK_STDLIB = YES;
 				SWIFT_FORCE_STATIC_LINK_STDLIB = NO;
 				TARGET_NAME = plank;
@@ -477,6 +478,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(TOOLCHAIN_DIR)/usr/lib/swift/macosx @executable_path";
 				OTHER_LDFLAGS = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "$(inherited)";
+				PRODUCT_NAME = "my-$(TARGET_NAME)";
 				SWIFT_FORCE_DYNAMIC_LINK_STDLIB = YES;
 				SWIFT_FORCE_STATIC_LINK_STDLIB = NO;
 				TARGET_NAME = plank;
